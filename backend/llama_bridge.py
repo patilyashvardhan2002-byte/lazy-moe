@@ -30,7 +30,7 @@ class InferenceConfig:
     temp: float = 0.7
     top_p: float = 0.9
     repeat_penalty: float = 1.1
-    mlock: bool = False
+    mlock: bool = True
     mmap: bool = True
     verbose: bool = False
 
