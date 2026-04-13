@@ -152,6 +152,19 @@ Click **⬡ SYSTEM** in the UI to see exactly which models run on YOUR hardware.
 
 ---
 
+## ⚠ SSD Protection
+
+LazyMoE uses `mlock` to pin model weights in RAM and prevent the OS
+from writing them to swap. This protects your SSD from excessive
+write cycles.
+
+If your RAM is smaller than the model size, LazyMoE will refuse to
+load rather than swapping. Stick to models that fit within your RAM
+budget — use the ⬡ SYSTEM panel in the UI to see exactly which
+models are safe for your hardware.
+
+---
+
 ## Environment Variables
 
 ```bash
@@ -159,7 +172,8 @@ LAZY_MOE_MODEL=./models/your-model.gguf   # path to GGUF file
 LAZY_MOE_RAM_GB=8                          # RAM budget in GB
 LAZY_MOE_THREADS=4                         # CPU threads for inference
 LAZY_MOE_SHARDS=./models/shards           # expert shard directory
-LAZY_MOE_KV_BITS=3                        # TurboQuant bits (2/3/4)
+LAZY_MOE_KV_BITS=3    
+
 ```
 
 ---
@@ -222,13 +236,17 @@ lazy-moe/
 
 ## Roadmap
 
-- [ ] Real llama.cpp MoE expert routing hooks (C++ patch for true lazy loading)
-- [ ] 1-bit model support (when BitNet 70B+ weights are released)
+- [x] SSD swap protection via mlock
+- [x] Universal model detection from GGUF metadata
+- [x] Hardware compatibility matrix
+- [x] TurboQuant KV cache compression
+- [x] Cyberpunk terminal dashboard
+- [ ] Real llama.cpp MoE expert routing hooks (C++ patch)
+- [ ] 1-bit model support — requires BitNet native trained weights
+(not post-quantization). Waiting for public 70B+ BitNet release.
 - [ ] Expert activation profiling pipeline
 - [ ] Speculative decoding (3B draft + 120B verifier)
 - [ ] Multi-device sharding via Exo
-- [ ] Web-based model downloader
-
 ---
 
 ## License
