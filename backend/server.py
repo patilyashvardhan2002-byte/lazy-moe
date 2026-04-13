@@ -39,6 +39,18 @@ logging.basicConfig(
 )
 logger = logging.getLogger("lazy-moe.server")
 
+# SSD protection warning
+try:
+    import psutil
+    mem = psutil.virtual_memory()
+    if mem.total < 8 * 1e9:
+        logger.warning(
+            "⚠ Less than 8GB RAM detected. Running large models "
+            "will use swap and damage your SSD. Stick to 7B Q4 models."
+        )
+except ImportError:
+    pass
+
 # ── Config ────────────────────────────────────────────────────────────────────
 MODEL_PATH = os.environ.get(
     "LAZY_MOE_MODEL",
